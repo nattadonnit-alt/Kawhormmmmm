@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-rose-50/50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kawhormmmm</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Prompt & Mali for cute Thai typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Mali:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Canvas Confetti for particle effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastel: {
+                            pink: '#FFD6E0',
+                            rose: '#FFB7C5',
+                            accent: '#FF85A1',
+                            deep: '#E06380',
+                            card: '#FFF5F7',
+                            bg: '#FFF0F3',
+                            subtle: '#FAF0F2',
+                            text: '#5A4A4E'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        cute: ['Mali', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            color: #5A4A4E;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .font-cute {
+            font-family: 'Mali', cursive;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF0F3;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFB7C5;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF85A1;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-full flex flex-col bg-slate-50/50 text-slate-700 selection:bg-rose-200">
+
+    <!-- Header Banner -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-rose-100 sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-2xl bg-rose-100 flex items-center justify-center text-rose-500 font-cute font-bold text-xl shadow-inner">
+                    ð¸
+                </div>
+                <h1 class="text-xl font-semibold tracking-wide text-rose-600 font-cute">Kawhormmmm</h1>
+            </div>
+            
+            <!-- Quick Floating Day Badge -->
+            <div id="header-day-badge" class="px-3 py-1 rounded-full bg-rose-50 border border-rose-100 text-xs font-medium text-rose-500 flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="heart" class="w-3.5 h-3.5 fill-rose-400 text-rose-400"></i>
+                <span id="header-days-count">0</span> à¸§à¸±à¸
+            </div>
+        </div>
+
+        <!-- Tab Navigation Bar -->
+        <nav class="max-w-4xl mx-auto px-2 flex justify-around border-t border-rose-50/60 overflow-x-auto">
+            <button onclick="switchTab('profile')" id="nav-profile" class="tab-btn flex-1 min-w-[70px] py-2.5 px-2 text-xs md:text-sm font-medium text-center border-b-2 border-rose-400 text-rose-600 transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="user" class="w-4 h-4"></i>
+                <span>Profile</span>
+            </button>
+            <button onclick="switchTab('albums')" id="nav-albums" class="tab-btn flex-1 min-w-[70px] py-2.5 px-2 text-xs md:text-sm font-medium text-center border-b-2 border-transparent text-slate-400 hover:text-rose-500 transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="image" class="w-4 h-4"></i>
+                <span>Albums</span>
+            </button>
+            <button onclick="switchTab('study')" id="nav-study" class="tab-btn flex-1 min-w-[70px] py-2.5 px-2 text-xs md:text-sm font-medium text-center border-b-2 border-transparent text-slate-400 hover:text-rose-500 transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="book-open" class="w-4 h-4"></i>
+                <span>Study & Sheets</span>
+            </button>
+            <button onclick="switchTab('notes')" id="nav-notes" class="tab-btn flex-1 min-w-[70px] py-2.5 px-2 text-xs md:text-sm font-medium text-center border-b-2 border-transparent text-slate-400 hover:text-rose-500 transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="message-square" class="w-4 h-4"></i>
+                <span>Notes & Q&A</span>
+            </button>
+            <button onclick="switchTab('extras')" id="nav-extras" class="tab-btn flex-1 min-w-[70px] py-2.5 px-2 text-xs md:text-sm font-medium text-center border-b-2 border-transparent text-slate-400 hover:text-rose-500 transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <span>Extras</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 md:p-6 space-y-6">
+
+        <!-- ==========================================
+             PAGE 1: PROFILE & DAYS
+        ========================================== -->
+        <section id="tab-profile" class="tab-content active space-y-6">
+            
+            <!-- Day Counter Card -->
+            <div class="bg-gradient-to-br from-rose-50 via-white to-pink-50 rounded-2xl p-6 border border-rose-100 shadow-sm text-center relative overflow-hidden">
+                <div class="absolute top-2 right-2 text-rose-200 opacity-20 pointer-events-none">
+                    <i data-lucide="heart" class="w-32 h-32"></i>
+                </div>
+                
+                <div class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-white border border-rose-200 text-xs text-rose-500 font-medium mb-3 shadow-xs">
+                    31/08/2026
+                </div>
+                
+                <div class="text-4xl md:text-6xl font-bold text-rose-500 my-2 font-cute tracking-wide flex items-center justify-center gap-2">
+                    <span id="total-days-count">0</span>
+                    <span class="text-lg md:text-2xl font-normal text-rose-400">à¸§à¸±à¸</span>
+                </div>
+                
+                <p id="anniversary-subtitle" class="text-xs text-slate-400 mt-2 font-light"></p>
+            </div>
+
+            <!-- Profiles Grid -->
+            <div class="grid md:grid-cols-2 gap-4">
+                
+                <!-- Tonnam Profile -->
+                <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-xs hover:shadow-sm transition-shadow">
+                    <div class="flex items-center gap-3 pb-4 border-b border-rose-50">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-xl shadow-xs">
+                            ð¦ð»
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-slate-700">Tonnam</h2>
+                            <p class="text-xs text-slate-400">20/02/2012</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 space-y-3">
+                        <div>
+                            <label class="text-xs font-medium text-slate-400 flex items-center gap-1 mb-1">
+                                <i data-lucide="utensils" class="w-3.5 h-3.5 text-rose-400"></i> Favorite Foods
+                            </label>
+                            <input type="text" id="tonnam-food" onchange="saveProfileData()" placeholder="à¸à¸´à¸¡à¸à¹à¸­à¸²à¸«à¸²à¸£à¸à¸µà¹à¸à¸­à¸..." 
+                                class="w-full text-sm px-3 py-2 bg-rose-50/30 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300 transition-all">
+                        </div>
+                        <div>
+                            <label class="text-xs font-medium text-slate-400 flex items-center gap-1 mb-1">
+                                <i data-lucide="music" class="w-3.5 h-3.5 text-rose-400"></i> Favorite Songs
+                            </label>
+                            <input type="text" id="tonnam-song" onchange="saveProfileData()" placeholder="à¸à¸´à¸¡à¸à¹à¹à¸à¸¥à¸à¸à¸µà¹à¸à¸­à¸..." 
+                                class="w-full text-sm px-3 py-2 bg-rose-50/30 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300 transition-all">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kawhorm Profile -->
+                <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-xs hover:shadow-sm transition-shadow">
+                    <div class="flex items-center gap-3 pb-4 border-b border-rose-50">
+                        <div class="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-center text-xl shadow-xs">
+                            ð§ð»
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-slate-700">kawhorm</h2>
+                            <p class="text-xs text-slate-400">24/10/2011</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 space-y-3">
+                        <div>
+                            <label class="text-xs font-medium text-slate-400 flex items-center gap-1 mb-1">
+                                <i data-lucide="utensils" class="w-3.5 h-3.5 text-rose-400"></i> Favorite Foods
+                            </label>
+                            <input type="text" id="kawhorm-food" onchange="saveProfileData()" placeholder="à¸à¸´à¸¡à¸à¹à¸­à¸²à¸«à¸²à¸£à¸à¸µà¹à¸à¸­à¸..." 
+                                class="w-full text-sm px-3 py-2 bg-rose-50/30 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300 transition-all">
+                        </div>
+                        <div>
+                            <label class="text-xs font-medium text-slate-400 flex items-center gap-1 mb-1">
+                                <i data-lucide="music" class="w-3.5 h-3.5 text-rose-400"></i> Favorite Songs
+                            </label>
+                            <input type="text" id="kawhorm-song" onchange="saveProfileData()" placeholder="à¸à¸´à¸¡à¸à¹à¹à¸à¸¥à¸à¸à¸µà¹à¸à¸­à¸..." 
+                                class="w-full text-sm px-3 py-2 bg-rose-50/30 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300 transition-all">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PAGE 2: PHOTO ALBUMS (NEW FEATURE)
+        ========================================== -->
+        <section id="tab-albums" class="tab-content space-y-6">
+            
+            <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-xs space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-base font-semibold text-slate-700 flex items-center gap-2">
+                        <i data-lucide="folder-plus" class="w-5 h-5 text-rose-400"></i>
+                        à¸ªà¸£à¹à¸²à¸à¸­à¸±à¸¥à¸à¸±à¹à¸¡à¸£à¸¹à¸à¸ à¸²à¸
+                    </h2>
+                </div>
+
+                <!-- Create Album Form -->
+                <form onsubmit="createAlbum(event)" class="flex gap-2">
+                    <input type="text" id="album-title-input" required placeholder="à¸à¸·à¹à¸­à¸­à¸±à¸¥à¸à¸±à¹à¸¡ (à¹à¸à¹à¸ à¸à¸§à¸²à¸¡à¸à¸£à¸à¸à¸³à¸à¸²à¸£à¹à¸£à¸µà¸¢à¸, à¸à¸£à¸´à¸à¸§à¸±à¸à¸«à¸¢à¸¸à¸)..." 
+                        class="flex-1 text-sm px-3 py-2 bg-rose-50/30 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300">
+                    <button type="submit" class="px-4 py-2 bg-rose-400 hover:bg-rose-500 text-white rounded-xl text-sm font-medium transition-all active:scale-95 flex items-center gap-1">
+                        <i data-lucide="plus" class="w-4 h-4"></i> à¸ªà¸£à¹à¸²à¸
+                    </button>
+                </form>
+
+                <!-- Album List Display -->
+                <div id="albums-grid" class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2">
+                    <!-- Dynamic Albums -->
+                </div>
+            </div>
+
+            <!-- Single Album View Modal/Section (Hidden by default) -->
+            <div id="album-view-modal" class="hidden bg-white rounded-2xl p-5 border border-rose-100 shadow-xs space-y-4">
+                <div class="flex items-center justify-between border-b border-rose-50 pb-3">
+                    <div class="flex items-center gap-2">
+                        <button onclick="closeAlbumView()" class="p-1.5 rounded-lg border border-rose-100 text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-all">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        </button>
+                        <h3 id="current-album-title" class="text-base font-semibold text-slate-700 font-cute">à¸à¸·à¹à¸­à¸­à¸±à¸¥à¸à¸±à¹à¸¡</h3>
+                    </div>
+                    <button onclick="deleteCurrentAlbum()" class="text-xs px-2.5 py-1 text-rose-500 hover:bg-rose-50 border border-rose-100 rounded-lg transition-all flex items-center gap-1">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> à¸¥à¸à¸­à¸±à¸¥à¸à¸±à¹à¸¡à¸à¸µà¹
+                    </button>
+                </div>
+
+                <!-- Add Photos Controls -->
+                <div class="bg-rose-50/30 rounded-xl p-3 border border-rose-100 space-y-2">
+                    <label class="text-xs font-medium text-slate-600 block">à¹à¸à¸´à¹à¸¡à¸£à¸¹à¸à¸ à¸²à¸à¹à¸«à¸¡à¹à¹à¸à¸­à¸±à¸¥à¸à¸±à¹à¸¡</label>
+                    <div class="grid sm:grid-cols-12 gap-2">
+                        <!-- File Input -->
+                        <input type="file" id="photo-file-input" accept="image/*" multiple
+                            class="sm:col-span-7 text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-medium file:bg-rose-100 file:text-rose-600 hover:file:bg-rose-200 border border-rose-100 rounded-xl bg-white p-1">
+                        
+                        <!-- URL Input alternative -->
+                        <input type="url" id="photo-url-input" placeholder="à¸«à¸£à¸·à¸­à¸§à¸²à¸à¸¥à¸´à¸à¸à¹à¸£à¸¹à¸..." 
+                            class="sm:col-span-3 text-xs px-2.5 py-1.5 bg-white border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300">
+                        
+                        <button onclick="addPhotosToCurrentAlbum()" class="sm:col-span-2 py-1.5 bg-rose-400 hover:bg-rose-500 text-white text-xs rounded-xl font-medium transition-all active:scale-95 flex items-center justify-center gap-1">
+                            <i data-lucide="upload" class="w-3.5 h-3.5"></i> à¸à¸±à¸à¸à¸¶à¸
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Photos Grid -->
+                <div id="photos-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pt-2">
+                    <!-- Dynamic Photos -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ==========================================
+             PAGE 3: STUDY & SHEETS (FILE ATTACHMENTS)
+        ========================================== -->
+        <section id="tab-study" class="tab-content space-y-6">
+            
+            <div class="grid md:grid-cols-3 gap-4">
+                
+                <!-- Pomodoro Timer Card -->
+                <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-xs flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-base font-semibold text-slate-700 flex items-center gap-2">
+                                <i data-lucide="timer" class="w-5 h-5 text-rose-400"></i>
+                                Pomodoro Focus
+                            </h2>
+                            <span id="pomo-mode" class="text-xs px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-500 font-medium">Study</span>
+                        </div>
+
+                        <div class="text-center py-6">
+                            <div id="pomo-timer" class="text-5xl font-mono font-bold text-slate-700 tracking-wider">
+                                25:00
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-2">
+                        <button id="pomo-start-btn" onclick="togglePomodoro()" class="flex-1 py-2 rounded-xl bg-rose-400 hover:bg-rose-500 active:scale-95 text-white font-medium text-sm transition-all shadow-xs flex items-center justify-center gap-1">
+                            <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+                            <span>Start</span>
+                        </button>
+                        <button onclick="resetPomodoro()" class="p-2 rounded-xl border border-rose-100 text-slate-400 hover:text-rose-500 hover:bg-rose-50 active:scale-95 transition-all">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Exam / Quiz Countdown -->
+                <div class="md:col-span-2 bg-white rounded-2xl p-5 border border-rose-100 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-base font-semibold text-slate-700 flex items-center gap-2">
+                            <i data-lucide="calendar" class="w-5 h-5 text-rose-400"></i>
+                            Exam & Deadline Countdown
+                        </h2>
+                    </div>
+
+                    <!-- Add Exam Form -->
+                    <form onsubmit="addExamCountdown(event)" class="flex flex-wrap md:flex-nowrap gap-2">
+                        <input type="text" id="exam-title" required placeholder="à¸à¸·à¹à¸­à¸§à¸´à¸à¸² / à¸ªà¸­à¸..." 
+                            class="flex-1 text-sm px-3 py-2 bg-rose-50/30 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300">
+                        <input type="date" id="exam-date" required 
+                            class="text-sm px-3 py-2 bg-rose-50/30 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300 text-slate-600">
+                        <button type="submit" class="px-4 py-2 bg-rose-400 hover:bg-rose-500 text-white rounded-xl text-sm font-medium transition-all active:scale-95 flex items-center gap-1">
+                            <i data-lucide="plus" class="w-4 h-4"></i> à¹à¸à¸´à¹à¸¡
+                        </button>
+                    </form>
+
+                    <!-- List of Exam Countdowns -->
+                    <div id="exam-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+                </div>
+
+            </div>
+
+            <!-- Study Sheet Share Hub (With File Attachment) -->
+            <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-xs space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-base font-semibold text-slate-700 flex items-center gap-2">
+                        <i data-lucide="file-text" class="w-5 h-5 text-rose-400"></i>
+                        à¸à¸µà¸à¸ªà¸£à¸¸à¸à¹à¸¥à¸°à¸à¸²à¸£à¹à¸£à¸µà¸¢à¸ (à¹à¸à¸à¹à¸à¸¥à¹à¹à¸à¹)
+                    </h2>
+                </div>
+
+                <!-- Add Sheet Form -->
+                <form onsubmit="addStudySheet(event)" class="space-y-3 bg-rose-50/20 p-3 rounded-xl border border-rose-100">
+                    <div class="grid md:grid-cols-12 gap-2">
+                        <input type="text" id="sheet-subject" required placeholder="à¸§à¸´à¸à¸² (à¹à¸à¹à¸ à¸à¸à¸´à¸, à¸à¸µà¸§à¸°)" 
+                            class="md:col-span-4 text-sm px-3 py-2 bg-white border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300">
+                        <input type="text" id="sheet-title" required placeholder="à¸«à¸±à¸§à¸à¹à¸­ / à¸£à¸²à¸¢à¸¥à¸°à¹à¸­à¸µà¸¢à¸à¸ªà¸£à¸¸à¸..." 
+                            class="md:col-span-8 text-sm px-3 py-2 bg-white border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300">
+                    </div>
+
+                    <div class="grid md:grid-cols-12 gap-2 items-center">
+                        <!-- File Upload -->
+                        <div class="md:col-span-6 flex items-center gap-2">
+                            <input type="file" id="sheet-file-input" 
+                                class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-medium file:bg-rose-100 file:text-rose-600 hover:file:bg-rose-200 border border-rose-100 rounded-xl bg-white p-1">
+                        </div>
+                        
+                        <!-- URL fallback -->
+                        <input type="url" id="sheet-url" placeholder="à¸«à¸£à¸·à¸­à¹à¸à¸à¸¥à¸´à¸à¸à¹ (Google Drive/Canva)..." 
+                            class="md:col-span-4 text-sm px-3 py-2 bg-white border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300">
+                        
+                        <button type="submit" class="md:col-span-2 py-2 bg-rose-400 hover:bg-rose-500 text-white rounded-xl text-sm font-medium transition-all active:scale-95 flex items-center justify-center gap-1">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i> à¸à¸±à¸à¸à¸¶à¸à¸à¸µà¸
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Sheets List -->
+                <div id="sheets-list" class="grid sm:grid-cols-2 gap-3 pt-2"></div>
+            </div>
+
+        </section>
+
+        <!-- ==========================================
+             PAGE 4: NOTES & Q&A
+        ========================================== -->
+        <section id="tab-notes" class="tab-content space-y-6">
+            
+            <!-- Sticky Notes Board -->
+            <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-xs space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-base font-semibold text-slate-700 flex items-center gap-2">
+                        <i data-lucide="sticky-note" class="w-5 h-5 text-rose-400"></i>
+                        Sticky Notes
+                    </h2>
+                </div>
+
+                <!-- Add Sticky Note -->
+                <form onsubmit="addStickyNote(event)" class="flex gap-2">
+                    <input type="text" id="note-input" required placeholder="à¸à¸²à¸à¹à¸à¹à¸à¸ªà¸±à¹à¸à¹ à¸«à¸£à¸·à¸­à¹à¸à¸·à¸­à¸à¸à¸§à¸²à¸¡à¸à¸³..." 
+                        class="flex-1 text-sm px-3 py-2 bg-rose-50/30 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300">
+                    <button type="submit" class="px-4 py-2 bg-rose-400 hover:bg-rose-500 text-white rounded-xl text-sm font-medium transition-all active:scale-95 flex items-center gap-1">
+                        <i data-lucide="send" class="w-4 h-4"></i> à¸ªà¹à¸
+                    </button>
+                </form>
+
+                <!-- Sticky Notes Grid -->
+                <div id="notes-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pt-2"></div>
+            </div>
+
+            <!-- Q&A Whisper Box -->
+            <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-xs space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-base font-semibold text-slate-700 flex items-center gap-2">
+                        <i data-lucide="help-circle" class="w-5 h-5 text-rose-400"></i>
+                        Q&A Whisper Box
+                    </h2>
+                </div>
+
+                <!-- Ask Question Form -->
+                <form onsubmit="addQuestion(event)" class="flex gap-2">
+                    <input type="text" id="qa-question-input" required placeholder="à¸à¸´à¸¡à¸à¹à¸à¸³à¸à¸²à¸¡à¸à¸µà¹à¸­à¸¢à¸²à¸à¸à¸²à¸¡..." 
+                        class="flex-1 text-sm px-3 py-2 bg-rose-50/30 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300">
+                    <button type="submit" class="px-4 py-2 bg-rose-400 hover:bg-rose-500 text-white rounded-xl text-sm font-medium transition-all active:scale-95 flex items-center gap-1">
+                        <i data-lucide="help-circle" class="w-4 h-4"></i> à¸à¸²à¸¡
+                    </button>
+                </form>
+
+                <!-- Q&A Items List -->
+                <div id="qa-list" class="space-y-3 pt-2"></div>
+            </div>
+
+        </section>
+
+        <!-- ==========================================
+             PAGE 5: CUTE EXTRAS
+        ========================================== -->
+        <section id="tab-extras" class="tab-content space-y-6">
+            
+            <div class="grid md:grid-cols-2 gap-4">
+                
+                <!-- Daily Study Mood Picker -->
+                <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-xs space-y-4">
+                    <h2 class="text-base font-semibold text-slate-700 flex items-center gap-2">
+                        <i data-lucide="smile" class="w-5 h-5 text-rose-400"></i>
+                        Daily Study Mood
+                    </h2>
+
+                    <div class="flex justify-between gap-2 p-2 bg-rose-50/40 rounded-xl border border-rose-100">
+                        <button onclick="setMood('ð´')" class="mood-btn flex-1 py-2 text-2xl rounded-lg hover:bg-white transition-all text-center">ð´</button>
+                        <button onclick="setMood('ð')" class="mood-btn flex-1 py-2 text-2xl rounded-lg hover:bg-white transition-all text-center">ð</button>
+                        <button onclick="setMood('â')" class="mood-btn flex-1 py-2 text-2xl rounded-lg hover:bg-white transition-all text-center">â</button>
+                        <button onclick="setMood('âï¸')" class="mood-btn flex-1 py-2 text-2xl rounded-lg hover:bg-white transition-all text-center">âï¸</button>
+                        <button onclick="setMood('ð¡')" class="mood-btn flex-1 py-2 text-2xl rounded-lg hover:bg-white transition-all text-center">ð¡</button>
+                    </div>
+
+                    <div id="current-mood-display" class="text-center py-2 text-xs text-slate-500">
+                        à¸¢à¸±à¸à¹à¸¡à¹à¹à¸à¹à¹à¸¥à¸·à¸­à¸à¸­à¸²à¸£à¸¡à¸à¹à¸§à¸±à¸à¸à¸µà¹
+                    </div>
+                </div>
+
+                <!-- High-Five & Encouragement Button -->
+                <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-xs flex flex-col justify-between space-y-4">
+                    <h2 class="text-base font-semibold text-slate-700 flex items-center gap-2">
+                        <i data-lucide="heart-handshake" class="w-5 h-5 text-rose-400"></i>
+                        à¸ªà¹à¸à¸à¸³à¸¥à¸±à¸à¹à¸à¹à¸«à¹à¸à¸±à¸
+                    </h2>
+
+                    <div class="text-center py-2">
+                        <span id="encouragement-count" class="text-3xl font-bold font-cute text-rose-500">0</span>
+                        <span class="text-xs text-slate-400 block mt-1">à¸à¸³à¸¥à¸±à¸à¹à¸à¸ªà¸°à¸ªà¸¡</span>
+                    </div>
+
+                    <button onclick="sendEncouragement(event)" class="w-full py-3 bg-gradient-to-r from-rose-300 to-pink-400 hover:from-rose-400 hover:to-pink-500 active:scale-95 text-white font-medium rounded-xl text-sm transition-all shadow-sm flex items-center justify-center gap-2">
+                        <span>â¨ à¸ªà¹à¸à¸à¸³à¸¥à¸±à¸à¹à¸ (High-Five)</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                
+                <!-- Decision Spinner Wheel -->
+                <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-xs space-y-4 text-center">
+                    <h2 class="text-base font-semibold text-slate-700 flex items-center gap-2 text-left">
+                        <i data-lucide="disc" class="w-5 h-5 text-rose-400"></i>
+                        à¸ªà¸¸à¹à¸¡à¸à¸à¸¡/à¸à¸´à¸à¸à¸£à¸£à¸¡à¸à¸±à¸à¸ªà¸²à¸¢à¸à¸²
+                    </h2>
+
+                    <div class="relative inline-block w-48 h-48 my-2">
+                        <div class="absolute -top-2 left-1/2 -translate-x-1/2 z-10 text-rose-500 font-bold text-lg">â¼</div>
+                        <canvas id="spinner-canvas" width="200" height="200" class="w-full h-full rounded-full border-4 border-rose-100 shadow-xs transition-transform duration-[4000ms] ease-out"></canvas>
+                    </div>
+
+                    <div>
+                        <button onclick="spinWheel()" id="spin-btn" class="px-6 py-2 bg-rose-400 hover:bg-rose-500 active:scale-95 text-white rounded-xl text-sm font-medium transition-all shadow-xs">
+                            à¸«à¸¡à¸¸à¸à¹à¸¥à¸¢!
+                        </button>
+                    </div>
+                    
+                    <div id="spinner-result" class="text-sm font-medium text-rose-500 min-h-[20px]"></div>
+                </div>
+
+                <!-- Joint Study Goals Checklist -->
+                <div class="bg-white rounded-2xl p-5 border border-rose-100 shadow-xs space-y-4">
+                    <h2 class="text-base font-semibold text-slate-700 flex items-center gap-2">
+                        <i data-lucide="check-square" class="w-5 h-5 text-rose-400"></i>
+                        à¹à¸à¹à¸²à¸«à¸¡à¸²à¸¢à¸à¸²à¸£à¹à¸£à¸µà¸¢à¸à¸£à¹à¸§à¸¡à¸à¸±à¸
+                    </h2>
+
+                    <!-- Add Goal Form -->
+                    <form onsubmit="addGoal(event)" class="flex gap-2">
+                        <input type="text" id="goal-input" required placeholder="à¹à¸à¸´à¹à¸¡à¹à¸à¹à¸²à¸«à¸¡à¸²à¸¢..." 
+                            class="flex-1 text-sm px-3 py-2 bg-rose-50/30 border border-rose-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-rose-300">
+                        <button type="submit" class="px-3 py-2 bg-rose-400 hover:bg-rose-500 text-white rounded-xl text-sm font-medium transition-all active:scale-95 flex items-center">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+
+                    <!-- Goals List -->
+                    <div id="goals-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Lightbox Modal for Photo Viewer -->
+    <div id="lightbox-modal" class="fixed inset-0 bg-black/80 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white hover:text-rose-300 transition-colors p-2">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <img id="lightbox-img" src="" alt="Enlarged photo" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain">
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center text-xs text-slate-400 border-t border-rose-50 bg-white/50 mt-auto">
+        Kawhormmmm &bull; Student Companion
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // =========================================================================
+        // CONSTANTS & IMMUTABLE DATA
+        // =========================================================================
+        const START_DATE = new Date("2026-08-31T00:00:00");
+        const SPINNER_ITEMS = ['à¸à¸²à¸à¸¡à¹à¸à¹à¸¡à¸¸à¸', 'à¸à¸­à¸à¸à¸±à¸ 15 à¸à¸²à¸à¸µ', 'à¹à¸à¸´à¸à¸¢à¸·à¸à¹à¸ªà¹à¸à¸¢à¸·à¸à¸ªà¸²à¸¢', 'à¸à¸à¸¡à¸à¸£à¸¸à¸à¸à¸£à¸­à¸', 'à¸à¸±à¸à¹à¸à¸¥à¸à¹à¸à¸£à¸', 'à¹à¸­à¸¨à¸à¸£à¸µà¸¡'];
+        const SPINNER_COLORS = ['#FFD6E0', '#FFB7C5', '#FF85A1', '#FFF0F3', '#FFE5EC', '#F8EDEB'];
+
+        // =========================================================================
+        // APP STATE (LOCALSTORAGE)
+        // =========================================================================
+        let appState = {
+            profiles: { tonnamFood: '', tonnamSong: '', kawhormFood: '', kawhormSong: '' },
+            albums: [],
+            exams: [],
+            sheets: [],
+            notes: [],
+            qaList: [],
+            mood: '',
+            encouragementCount: 0,
+            goals: []
+        };
+
+        let currentAlbumId = null;
+
+        function initIcons() {
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        }
+
+        window.onload = function() {
+            loadFromLocalStorage();
+            calculateDaysTogether();
+            renderAlbums();
+            renderExams();
+            renderSheets();
+            renderNotes();
+            renderQA();
+            renderGoals();
+            drawSpinnerWheel();
+            updateMoodDisplay();
+            document.getElementById('encouragement-count').innerText = appState.encouragementCount || 0;
+            initIcons();
+        };
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('kawhormmmm_data');
+            if (saved) {
+                try {
+                    appState = Object.assign(appState, JSON.parse(saved));
+                    if (appState.profiles) {
+                        document.getElementById('tonnam-food').value = appState.profiles.tonnamFood || '';
+                        document.getElementById('tonnam-song').value = appState.profiles.tonnamSong || '';
+                        document.getElementById('kawhorm-food').value = appState.profiles.kawhormFood || '';
+                        document.getElementById('kawhorm-song').value = appState.profiles.kawhormSong || '';
+                    }
+                } catch(e) {
+                    console.error("Failed to parse saved data:", e);
+                }
+            }
+        }
+
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('kawhormmmm_data', JSON.stringify(appState));
+            } catch(e) {
+                alert("à¸à¸·à¹à¸à¸à¸µà¹à¸à¸±à¸à¹à¸à¹à¸à¸à¹à¸­à¸¡à¸¹à¸¥à¹à¸à¹à¸¡! à¸¥à¸­à¸à¸¥à¸à¸à¸à¸²à¸à¸£à¸¹à¸à¸ à¸²à¸à¸«à¸£à¸·à¸­à¸¥à¸à¹à¸à¸¥à¹à¸à¸µà¹à¹à¸¡à¹à¸à¸³à¹à¸à¹à¸à¸­à¸­à¸à¸à¸£à¸±à¸");
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-rose-400', 'text-rose-600');
+                btn.classList.add('border-transparent', 'text-slate-400');
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            activeNav.classList.remove('border-transparent', 'text-slate-400');
+            activeNav.classList.add('border-rose-400', 'text-rose-600');
+        }
+
+        // =========================================================================
+        // PAGE 1: DAYS & PROFILES LOGIC
+        // =========================================================================
+        function calculateDaysTogether() {
+            const now = new Date();
+            const diffTime = now - START_DATE;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            const displayDays = diffDays >= 0 ? diffDays : 0;
+
+            document.getElementById('total-days-count').innerText = displayDays;
+            document.getElementById('header-days-count').innerText = displayDays;
+
+            const subtitle = document.getElementById('anniversary-subtitle');
+            if (diffDays < 0) {
+                subtitle.innerText = `à¸à¸±à¸à¸à¸­à¸¢à¸«à¸¥à¸±à¸à¸­à¸µà¸ ${Math.abs(diffDays)} à¸§à¸±à¸ à¸à¸¶à¸à¸§à¸±à¸à¹à¸£à¸´à¹à¸¡à¸à¹à¸`;
+            } else {
+                subtitle.innerText = `à¹à¸£à¸´à¹à¸¡à¸à¹à¸à¹à¸à¸´à¸à¸à¸²à¸à¸£à¹à¸§à¸¡à¸à¸±à¸à¸à¸±à¹à¸à¹à¸à¹ 31 à¸ªà¸´à¸à¸«à¸²à¸à¸¡ 2026`;
+            }
+        }
+
+        function saveProfileData() {
+            appState.profiles = {
+                tonnamFood: document.getElementById('tonnam-food').value,
+                tonnamSong: document.getElementById('tonnam-song').value,
+                kawhormFood: document.getElementById('kawhorm-food').value,
+                kawhormSong: document.getElementById('kawhorm-song').value
+            };
+            saveToLocalStorage();
+        }
+
+        // =========================================================================
+        // PAGE 2: PHOTO ALBUMS LOGIC
+        // =========================================================================
+        function createAlbum(e) {
+            e.preventDefault();
+            const input = document.getElementById('album-title-input');
+            const title = input.value.trim();
+            if (title) {
+                const newAlbum = { id: Date.now(), title: title, photos: [] };
+                if (!appState.albums) appState.albums = [];
+                appState.albums.push(newAlbum);
+                saveToLocalStorage();
+                renderAlbums();
+                input.value = '';
+            }
+        }
+
+        function renderAlbums() {
+            const grid = document.getElementById('albums-grid');
+            if (!appState.albums || appState.albums.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-xs text-slate-400 text-center py-6 font-light">à¸¢à¸±à¸à¹à¸¡à¹à¸¡à¸µà¸­à¸±à¸¥à¸à¸±à¹à¸¡à¸£à¸¹à¸à¸ à¸²à¸</p>`;
+                return;
+            }
+
+            grid.innerHTML = appState.albums.map(album => {
+                const coverImg = album.photos && album.photos.length > 0 ? album.photos[0] : null;
+                return `
+                    <div onclick="openAlbum(${album.id})" class="cursor-pointer bg-rose-50/20 hover:bg-rose-50/50 rounded-2xl p-3 border border-rose-100 transition-all hover:shadow-sm flex flex-col justify-between space-y-3 group">
+                        <div class="w-full h-32 rounded-xl bg-rose-100/50 flex items-center justify-center overflow-hidden relative">
+                            ${coverImg ? `<img src="${coverImg}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">` : `<i data-lucide="image" class="w-8 h-8 text-rose-300"></i>`}
+                            <span class="absolute bottom-2 right-2 bg-black/50 text-white text-[10px] px-2 py-0.5 rounded-full backdrop-blur-xs">
+                                ${album.photos ? album.photos.length : 0} à¸£à¸¹à¸
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-slate-700 truncate">${escapeHtml(album.title)}</h3>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 group-hover:text-rose-400 transition-colors"></i>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            initIcons();
+        }
+
+        function openAlbum(albumId) {
+            currentAlbumId = albumId;
+            const album = appState.albums.find(a => a.id === albumId);
+            if (!album) return;
+
+            document.getElementById('current-album-title').innerText = album.title;
+            document.getElementById('album-view-modal').classList.remove('hidden');
+            renderCurrentAlbumPhotos();
+        }
+
+        function closeAlbumView() {
+            currentAlbumId = null;
+            document.getElementById('album-view-modal').classList.add('hidden');
+        }
+
+        function deleteCurrentAlbum() {
+            if (!currentAlbumId) return;
+            appState.albums = appState.albums.filter(a => a.id !== currentAlbumId);
+            saveToLocalStorage();
+            closeAlbumView();
+            renderAlbums();
+        }
+
+        async function addPhotosToCurrentAlbum() {
+            if (!currentAlbumId) return;
+            const album = appState.albums.find(a => a.id === currentAlbumId);
+            if (!album) return;
+
+            const fileInput = document.getElementById('photo-file-input');
+            const urlInput = document.getElementById('photo-url-input');
+
+            let added = false;
+
+            // Handle URL input
+            if (urlInput.value.trim()) {
+                album.photos.push(urlInput.value.trim());
+                urlInput.value = '';
+                added = true;
+            }
+
+            // Handle file input
+            if (fileInput.files && fileInput.files.length > 0) {
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    const file = fileInput.files[i];
+                    try {
+                        const dataUrl = await readFileAsDataURL(file);
+                        album.photos.push(dataUrl);
+                        added = true;
+                    } catch (err) {
+                        console.error("Error reading file:", err);
+                    }
+                }
+                fileInput.value = '';
+            }
+
+            if (added) {
+                saveToLocalStorage();
+                renderCurrentAlbumPhotos();
+                renderAlbums();
+            }
+        }
+
+        function deletePhoto(index) {
+            if (!currentAlbumId) return;
+            const album = appState.albums.find(a => a.id === currentAlbumId);
+            if (album && album.photos) {
+                album.photos.splice(index, 1);
+                saveToLocalStorage();
+                renderCurrentAlbumPhotos();
+                renderAlbums();
+            }
+        }
+
+        function renderCurrentAlbumPhotos() {
+            const album = appState.albums.find(a => a.id === currentAlbumId);
+            const grid = document.getElementById('photos-grid');
+            if (!album || !album.photos || album.photos.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-xs text-slate-400 text-center py-6 font-light">à¸¢à¸±à¸à¹à¸¡à¹à¸¡à¸µà¸£à¸¹à¸à¸ à¸²à¸à¹à¸à¸­à¸±à¸¥à¸à¸±à¹à¸¡à¸à¸µà¹</p>`;
+                return;
+            }
+
+            grid.innerHTML = album.photos.map((photo, idx) => `
+                <div class="relative group rounded-xl overflow-hidden aspect-square border border-rose-100 bg-slate-50">
+                    <img src="${photo}" onclick="openLightbox('${photo}')" class="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-300">
+                    <button onclick="deletePhoto(${idx})" class="absolute top-1 right-1 bg-black/60 hover:bg-rose-500 text-white p-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            `).join('');
+            initIcons();
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox-modal').classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox-modal').classList.add('hidden');
+        }
+
+        // Helper FileReader promise
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // =========================================================================
+        // PAGE 3: STUDY & SHEETS (FILE ATTACHMENTS) LOGIC
+        // =========================================================================
+        let pomoInterval = null;
+        let pomoTimeLeft = 25 * 60;
+        let pomoIsRunning = false;
+        let pomoIsBreak = false;
+
+        function togglePomodoro() {
+            const btn = document.getElementById('pomo-start-btn');
+            if (pomoIsRunning) {
+                clearInterval(pomoInterval);
+                pomoIsRunning = false;
+                btn.innerHTML = `<i data-lucide="play" class="w-4 h-4 fill-current"></i> <span>Start</span>`;
+            } else {
+                pomoIsRunning = true;
+                btn.innerHTML = `<i data-lucide="pause" class="w-4 h-4 fill-current"></i> <span>Pause</span>`;
+                pomoInterval = setInterval(updatePomodoro, 1000);
+            }
+            initIcons();
+        }
+
+        function resetPomodoro() {
+            clearInterval(pomoInterval);
+            pomoIsRunning = false;
+            pomoIsBreak = false;
+            pomoTimeLeft = 25 * 60;
+            document.getElementById('pomo-mode').innerText = "Study";
+            document.getElementById('pomo-mode').className = "text-xs px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-500 font-medium";
+            document.getElementById('pomo-start-btn').innerHTML = `<i data-lucide="play" class="w-4 h-4 fill-current"></i> <span>Start</span>`;
+            renderPomodoroDisplay();
+            initIcons();
+        }
+
+        function updatePomodoro() {
+            if (pomoTimeLeft > 0) {
+                pomoTimeLeft--;
+                renderPomodoroDisplay();
+            } else {
+                clearInterval(pomoInterval);
+                pomoIsRunning = false;
+                pomoIsBreak = !pomoIsBreak;
+                pomoTimeLeft = pomoIsBreak ? 5 * 60 : 25 * 60;
+                
+                const modeLabel = document.getElementById('pomo-mode');
+                if (pomoIsBreak) {
+                    modeLabel.innerText = "Break Time â";
+                    modeLabel.className = "text-xs px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 font-medium";
+                } else {
+                    modeLabel.innerText = "Study Mode ð";
+                    modeLabel.className = "text-xs px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-500 font-medium";
+                }
+                
+                document.getElementById('pomo-start-btn').innerHTML = `<i data-lucide="play" class="w-4 h-4 fill-current"></i> <span>Start</span>`;
+                renderPomodoroDisplay();
+                initIcons();
+            }
+        }
+
+        function renderPomodoroDisplay() {
+            const mins = Math.floor(pomoTimeLeft / 60).toString().padStart(2, '0');
+            const secs = (pomoTimeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('pomo-timer').innerText = `${mins}:${secs}`;
+        }
+
+        // Exams List
+        function addExamCountdown(e) {
+            e.preventDefault();
+            const title = document.getElementById('exam-title').value.trim();
+            const date = document.getElementById('exam-date').value;
+
+            if (title && date) {
+                appState.exams.push({ id: Date.now(), title, date });
+                saveToLocalStorage();
+                renderExams();
+                e.target.reset();
+            }
+        }
+
+        function deleteExam(id) {
+            appState.exams = appState.exams.filter(item => item.id !== id);
+            saveToLocalStorage();
+            renderExams();
+        }
+
+        function renderExams() {
+            const list = document.getElementById('exam-list');
+            if (!appState.exams || appState.exams.length === 0) {
+                list.innerHTML = `<p class="text-xs text-slate-400 text-center py-4 font-light">à¸¢à¸±à¸à¹à¸¡à¹à¸¡à¸µà¸à¸³à¸«à¸à¸à¸à¸²à¸£à¸ªà¸­à¸</p>`;
+                return;
+            }
+
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            list.innerHTML = appState.exams.map(exam => {
+                const examDate = new Date(exam.date);
+                const diffTime = examDate - today;
+                const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                let badgeColor = "bg-rose-50 text-rose-500";
+                let textDays = `à¸­à¸µà¸ ${daysLeft} à¸§à¸±à¸`;
+                if (daysLeft === 0) {
+                    textDays = "à¸§à¸±à¸à¸à¸µà¹!";
+                    badgeColor = "bg-rose-500 text-white animate-pulse";
+                } else if (daysLeft < 0) {
+                    textDays = "à¹à¸¥à¸¢à¸à¸³à¸«à¸à¸à¹à¸¥à¹à¸§";
+                    badgeColor = "bg-slate-100 text-slate-400";
+                }
+
+                return `
+                    <div class="flex items-center justify-between p-3 bg-rose-50/30 rounded-xl border border-rose-100">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs px-2.5 py-1 rounded-lg font-medium ${badgeColor}">${textDays}</span>
+                            <span class="text-sm font-medium text-slate-700">${escapeHtml(exam.title)}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-slate-400">${exam.date}</span>
+                            <button onclick="deleteExam(${exam.id})" class="text-slate-300 hover:text-rose-400 transition-colors">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            initIcons();
+        }
+
+        // Study Sheets (With File Upload)
+        async function addStudySheet(e) {
+            e.preventDefault();
+            const subject = document.getElementById('sheet-subject').value.trim();
+            const title = document.getElementById('sheet-title').value.trim();
+            const urlInput = document.getElementById('sheet-url').value.trim();
+            const fileInput = document.getElementById('sheet-file-input');
+
+            let fileData = null;
+            let fileName = null;
+
+            if (fileInput.files && fileInput.files[0]) {
+                const file = fileInput.files[0];
+                fileName = file.name;
+                try {
+                    fileData = await readFileAsDataURL(file);
+                } catch(err) {
+                    console.error("Failed to read sheet file", err);
+                }
+            }
+
+            if (subject && title) {
+                appState.sheets.push({
+                    id: Date.now(),
+                    subject,
+                    title,
+                    url: urlInput || null,
+                    fileData,
+                    fileName,
+                    date: new Date().toLocaleDateString('th-TH')
+                });
+                saveToLocalStorage();
+                renderSheets();
+                e.target.reset();
+            }
+        }
+
+        function deleteSheet(id) {
+            appState.sheets = appState.sheets.filter(item => item.id !== id);
+            saveToLocalStorage();
+            renderSheets();
+        }
+
+        function renderSheets() {
+            const list = document.getElementById('sheets-list');
+            if (!appState.sheets || appState.sheets.length === 0) {
+                list.innerHTML = `<p class="col-span-full text-xs text-slate-400 text-center py-4 font-light">à¸¢à¸±à¸à¹à¸¡à¹à¸¡à¸µà¸à¸µà¸à¸ªà¸£à¸¸à¸à¸à¸µà¹à¸à¸±à¸à¸à¸¶à¸à¹à¸§à¹</p>`;
+                return;
+            }
+
+            list.innerHTML = appState.sheets.map(sheet => `
+                <div class="p-3.5 bg-rose-50/20 rounded-xl border border-rose-100 flex flex-col justify-between space-y-2">
+                    <div class="flex items-start justify-between gap-2">
+                        <span class="text-xs font-semibold px-2 py-0.5 bg-rose-100 text-rose-600 rounded-md">
+                            ${escapeHtml(sheet.subject)}
+                        </span>
+                        <button onclick="deleteSheet(${sheet.id})" class="text-slate-300 hover:text-rose-400 transition-colors">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    
+                    <p class="text-sm font-medium text-slate-700 leading-snug">${escapeHtml(sheet.title)}</p>
+                    
+                    <div class="pt-1 flex flex-wrap items-center justify-between gap-2 border-t border-rose-50/60 text-xs">
+                        <span class="text-[10px] text-slate-400">${sheet.date || ''}</span>
+                        
+                        <div class="flex items-center gap-2">
+                            ${sheet.fileData ? `
+                                <a href="${sheet.fileData}" download="${escapeHtml(sheet.fileName || 'sheet')}" 
+                                    class="inline-flex items-center gap-1 text-xs text-rose-500 bg-white px-2 py-1 rounded-lg border border-rose-100 hover:bg-rose-50 transition-colors">
+                                    <i data-lucide="download" class="w-3 h-3"></i> à¹à¸à¸¥à¹à¹à¸à¸
+                                </a>
+                            ` : ''}
+                            ${sheet.url ? `
+                                <a href="${escapeHtml(sheet.url)}" target="_blank" rel="noopener noreferrer" 
+                                    class="inline-flex items-center gap-1 text-xs text-rose-500 bg-white px-2 py-1 rounded-lg border border-rose-100 hover:bg-rose-50 transition-colors">
+                                    <i data-lucide="external-link" class="w-3 h-3"></i> à¸¥à¸´à¸à¸à¹
+                                </a>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            initIcons();
+        }
+
+        // =========================================================================
+        // PAGE 4: NOTES & Q&A LOGIC
+        // =========================================================================
+        function addStickyNote(e) {
+            e.preventDefault();
+            const text = document.getElementById('note-input').value.trim();
+            if (text) {
+                appState.notes.push({ id: Date.now(), text, color: getRandomPastelColor() });
+                saveToLocalStorage();
+                renderNotes();
+                e.target.reset();
+            }
+        }
+
+        function deleteNote(id) {
+            appState.notes = appState.notes.filter(item => item.id !== id);
+            saveToLocalStorage();
+            renderNotes();
+        }
+
+        function getRandomPastelColor() {
+            const colors = ['bg-pink-100/70', 'bg-rose-100/70', 'bg-amber-100/70', 'bg-purple-100/70', 'bg-blue-100/70'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function renderNotes() {
+            const grid = document.getElementById('notes-grid');
+            if (!appState.notes || appState.notes.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-xs text-slate-400 text-center py-6 font-light">à¸¢à¸±à¸à¹à¸¡à¹à¸¡à¸µ Sticky Note</p>`;
+                return;
+            }
+
+            grid.innerHTML = appState.notes.map(note => `
+                <div class="p-3.5 rounded-xl border border-rose-100 ${note.color} flex flex-col justify-between space-y-3 shadow-xs relative group min-h-[100px]">
+                    <p class="text-xs font-cute text-slate-700 whitespace-pre-wrap leading-relaxed">${escapeHtml(note.text)}</p>
+                    <div class="flex justify-end">
+                        <button onclick="deleteNote(${note.id})" class="text-slate-400 hover:text-rose-500 transition-colors">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            initIcons();
+        }
+
+        // Q&A Box
+        function addQuestion(e) {
+            e.preventDefault();
+            const question = document.getElementById('qa-question-input').value.trim();
+            if (question) {
+                appState.qaList.push({ id: Date.now(), question, answer: '' });
+                saveToLocalStorage();
+                renderQA();
+                e.target.reset();
+            }
+        }
+
+        function saveAnswer(id, answerText) {
+            const item = appState.qaList.find(q => q.id === id);
+            if (item) {
+                item.answer = answerText.trim();
+                saveToLocalStorage();
+            }
+        }
+
+        function deleteQA(id) {
+            appState.qaList = appState.qaList.filter(item => item.id !== id);
+            saveToLocalStorage();
+            renderQA();
+        }
+
+        function renderQA() {
+            const list = document.getElementById('qa-list');
+            if (!appState.qaList || appState.qaList.length === 0) {
+                list.innerHTML = `<p class="text-xs text-slate-400 text-center py-4 font-light">à¸¢à¸±à¸à¹à¸¡à¹à¸¡à¸µà¸à¸³à¸à¸²à¸¡à¹à¸ Whisper Box</p>`;
+                return;
+            }
+
+            list.innerHTML = appState.qaList.map(item => `
+                <div class="p-4 bg-rose-50/30 rounded-xl border border-rose-100 space-y-3">
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="flex items-start gap-2">
+                            <span class="text-xs font-bold text-rose-500 bg-rose-100 px-2 py-0.5 rounded-md">Q</span>
+                            <p class="text-sm font-medium text-slate-700">${escapeHtml(item.question)}</p>
+                        </div>
+                        <button onclick="deleteQA(${item.id})" class="text-slate-300 hover:text-rose-400 transition-colors">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 pt-1 pl-6">
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-md">A</span>
+                        <input type="text" value="${escapeHtml(item.answer)}" 
+                            onchange="saveAnswer(${item.id}, this.value)"
+                            placeholder="à¸à¸´à¸¡à¸à¹à¸à¸³à¸à¸­à¸..." 
+                            class="flex-1 text-xs px-3 py-1.5 bg-white border border-rose-100 rounded-lg focus:outline-none focus:ring-1 focus:ring-rose-300">
+                    </div>
+                </div>
+            `).join('');
+            initIcons();
+        }
+
+        // =========================================================================
+        // PAGE 5: CUTE EXTRAS LOGIC
+        // =========================================================================
+        function setMood(emoji) {
+            appState.mood = emoji;
+            saveToLocalStorage();
+            updateMoodDisplay();
+        }
+
+        function updateMoodDisplay() {
+            const display = document.getElementById('current-mood-display');
+            if (appState.mood) {
+                display.innerHTML = `à¸­à¸²à¸£à¸¡à¸à¹à¸§à¸±à¸à¸à¸µà¹: <span class="text-2xl">${appState.mood}</span>`;
+            } else {
+                display.innerText = "à¸¢à¸±à¸à¹à¸¡à¹à¹à¸à¹à¹à¸¥à¸·à¸­à¸à¸­à¸²à¸£à¸¡à¸à¹à¸§à¸±à¸à¸à¸µà¹";
+            }
+        }
+
+        function sendEncouragement(e) {
+            appState.encouragementCount = (appState.encouragementCount || 0) + 1;
+            document.getElementById('encouragement-count').innerText = appState.encouragementCount;
+            saveToLocalStorage();
+
+            if (window.confetti) {
+                confetti({
+                    particleCount: 25,
+                    spread: 60,
+                    origin: { y: 0.7 },
+                    colors: ['#FFD6E0', '#FFB7C5', '#FF85A1']
+                });
+            }
+        }
+
+        let currentRotation = 0;
+        function drawSpinnerWheel() {
+            const canvas = document.getElementById('spinner-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const numItems = SPINNER_ITEMS.length;
+            const arc = (2 * Math.PI) / numItems;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < numItems; i++) {
+                const angle = i * arc;
+                ctx.beginPath();
+                ctx.fillStyle = SPINNER_COLORS[i % SPINNER_COLORS.length];
+                ctx.moveTo(100, 100);
+                ctx.arc(100, 100, 100, angle, angle + arc);
+                ctx.lineTo(100, 100);
+                ctx.fill();
+
+                ctx.save();
+                ctx.fillStyle = '#5A4A4E';
+                ctx.font = '11px Prompt';
+                ctx.translate(100 + Math.cos(angle + arc / 2) * 65, 100 + Math.sin(angle + arc / 2) * 65);
+                ctx.rotate(angle + arc / 2 + Math.PI / 2);
+                ctx.fillText(SPINNER_ITEMS[i], -ctx.measureText(SPINNER_ITEMS[i]).width / 2, 0);
+                ctx.restore();
+            }
+        }
+
+        function spinWheel() {
+            const canvas = document.getElementById('spinner-canvas');
+            const resultDisplay = document.getElementById('spinner-result');
+            const btn = document.getElementById('spin-btn');
+
+            btn.disabled = true;
+            resultDisplay.innerText = "à¸à¸³à¸¥à¸±à¸à¸ªà¸¸à¹à¸¡...";
+
+            const numItems = SPINNER_ITEMS.length;
+            const randomIndex = Math.floor(Math.random() * numItems);
+            const degreesPerItem = 360 / numItems;
+            
+            const extraDegrees = 360 * 4; 
+            const targetDegree = extraDegrees + (360 - (randomIndex * degreesPerItem + degreesPerItem / 2));
+
+            currentRotation += targetDegree;
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                resultDisplay.innerText = `à¹à¸à¹à¹à¸§à¸¥à¸²: ${SPINNER_ITEMS[randomIndex]} !`;
+                btn.disabled = false;
+                if (window.confetti) {
+                    confetti({ particleCount: 15, spread: 40, origin: { y: 0.8 } });
+                }
+            }, 4000);
+        }
+
+        // Goals List
+        function addGoal(e) {
+            e.preventDefault();
+            const text = document.getElementById('goal-input').value.trim();
+            if (text) {
+                appState.goals.push({ id: Date.now(), text, completed: false });
+                saveToLocalStorage();
+                renderGoals();
+                e.target.reset();
+            }
+        }
+
+        function toggleGoal(id) {
+            const goal = appState.goals.find(g => g.id === id);
+            if (goal) {
+                goal.completed = !goal.completed;
+                saveToLocalStorage();
+                renderGoals();
+            }
+        }
+
+        function deleteGoal(id) {
+            appState.goals = appState.goals.filter(g => g.id !== id);
+            saveToLocalStorage();
+            renderGoals();
+        }
+
+        function renderGoals() {
+            const list = document.getElementById('goals-list');
+            if (!appState.goals || appState.goals.length === 0) {
+                list.innerHTML = `<p class="text-xs text-slate-400 text-center py-4 font-light">à¸¢à¸±à¸à¹à¸¡à¹à¸¡à¸µà¹à¸à¹à¸²à¸«à¸¡à¸²à¸¢à¸à¸²à¸£à¹à¸£à¸µà¸¢à¸</p>`;
+                return;
+            }
+
+            list.innerHTML = appState.goals.map(goal => `
+                <div class="flex items-center justify-between p-2.5 bg-rose-50/30 rounded-xl border border-rose-100">
+                    <label class="flex items-center gap-2 cursor-pointer flex-1">
+                        <input type="checkbox" ${goal.completed ? 'checked' : ''} onchange="toggleGoal(${goal.id})"
+                            class="rounded text-rose-400 focus:ring-rose-300 w-4 h-4 accent-rose-400">
+                        <span class="text-xs text-slate-700 ${goal.completed ? 'line-through text-slate-400' : ''}">
+                            ${escapeHtml(goal.text)}
+                        </span>
+                    </label>
+                    <button onclick="deleteGoal(${goal.id})" class="text-slate-300 hover:text-rose-400 transition-colors">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            `).join('');
+            initIcons();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;")
+                      .replace(/</g, "&lt;")
+                      .replace(/>/g, "&gt;")
+                      .replace(/"/g, "&quot;")
+                      .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
